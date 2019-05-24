@@ -1,11 +1,56 @@
-var colors = generateRandomColors(6);
-
+var numSquares = 6;
+var colors = generateRandomColors(numSquares);
 var squares = document.querySelectorAll(".square");
 var pickedColor = pickColor();
 var colorDisplay = document.getElementById("colorDisplay");
 var messageDisplay = document.querySelector("#message");
 var h1 = document.querySelector("h1");
 var resetButton = document.querySelector("#reset");
+var modeButtons = document.querySelectorAll(".mode");
+
+for (var i = 0; i < modeButtons.length; i++) {
+    modeButtons[i].addEventListener("click", function() {
+        modeButtons[0].classList.remove("selected");
+        modeButtons[1].classList.remove("selected");
+        this.classList.add("selected");
+
+        if (this.textContent === "Easy") {
+            numSquares = 3;
+        }
+        else {
+            numSquares = 6;
+        }
+
+        reset();
+        
+    });
+}
+
+function reset() {
+    colors = generateRandomColors(numSquares);
+    pickedColor = pickColor();
+    colorDisplay.textContent = pickedColor;
+    resetButton.textContent = "New Colors";
+    
+    messageDisplay.textContent = "";
+
+    for (var i = 0; i < squares.length; i++) {
+        if (colors[i]) {
+            squares[i].style.display = "block";
+            squares[i].style.backgroundColor = colors[i];
+        }
+        else {
+            squares[i].style.display = "none";
+        }
+    }
+
+    // reset h1 to original background color
+    h1.style.backgroundColor = "steelblue"; 
+}
+
+resetButton.addEventListener("click", function() {
+    reset();
+});
 
 colorDisplay.textContent = pickedColor;
 
@@ -31,22 +76,10 @@ for (var i = 0; i < squares.length; i++) {
     });
 }
 
-resetButton.addEventListener("click", function() {
-    colors = generateRandomColors(6);
-    pickedColor = pickColor();
-    colorDisplay.textContent = pickedColor;
-
-    for (var i = 0; i < squares.length; i++) {
-        squares[i].style.backgroundColor = colors[i];
-    }
-
-    h1.style.background = "#232323";
-});
-
 function changeColors(color) {
     // iterate through all squares
     for (var i = 0; i < squares.length; i++) {
-        squares[i].style.background = color;
+        squares[i].style.backgroundColor = color;
     }
 }
 
